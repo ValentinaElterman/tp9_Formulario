@@ -8,7 +8,8 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
-  Alert
+  Alert,
+  ImageBackground
 } from 'react-native';
 import { Formulario } from './src/components/formulario';
 
@@ -31,8 +32,10 @@ export default function App() {
     const equipoTrim = formData.nombreEquipo.trim();
     if (!equipoTrim) {
       errors.nombreEquipo = 'El nombre del equipo es obligatorio.';
-    } else if (equipoTrim.length < 3 || equipoTrim.length > 20) {
-      errors.nombreEquipo = 'Debe tener entre 3 y 20 caracteres.';
+    } else if (equipoTrim.length < 3) {
+      errors.nombreEquipo = 'Debe tener al menos 3 caracteres.';
+    } else if (equipoTrim.length > 20) {
+      errors.nombreEquipo = 'No puede superar los 20 caracteres.';
     }
 
     if (!formData.nombreCapitan.trim()) {
@@ -53,7 +56,9 @@ export default function App() {
       errors.telefono = 'El teléfono es obligatorio.';
     } else if (!phoneRegex.test(telefonoTrim)) {
       errors.telefono = 'El teléfono solo debe contener números.';
-    }
+    } else if (telefonoTrim.length > 10) {
+    errors.telefono = 'El número de teléfono no puede superar los 10 dígitos.';
+  }
 
     if (!formData.categoria) {
       errors.categoria = 'Debes seleccionar una categoría.';
@@ -76,14 +81,19 @@ export default function App() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <KeyboardAvoidingView
-        style={styles.keyboardContainer}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      <ImageBackground
+        source={require('./assets/fondo.png')}
+        style={styles.background}
+        resizeMode="cover"
       >
-        <ScrollView 
-          contentContainerStyle={styles.scrollContent}
-          keyboardShouldPersistTaps="handled"
+        <KeyboardAvoidingView
+          style={styles.keyboardContainer}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
+          <ScrollView
+            contentContainerStyle={styles.scrollContent}
+            keyboardShouldPersistTaps="handled"
+          >
           <Text style={styles.title}>TORNEO DE FORTNITE 2026!!!</Text>
           <Text style={styles.subtitle}>Formulario de Inscripción</Text>
 
@@ -94,7 +104,6 @@ export default function App() {
             error={errors.nombreEquipo}
             keyboardType="default"
             placeholder="Ej. fortnine auras "
-            maxLength={20}
           />
 
           <Formulario
@@ -178,6 +187,7 @@ export default function App() {
           </TouchableOpacity>
         </ScrollView>
       </KeyboardAvoidingView>
+      </ImageBackground>
     </SafeAreaView>
   );
 }
@@ -185,7 +195,11 @@ export default function App() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#4c51f7',
+  },
+  background: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
   },
   keyboardContainer: {
     flex: 1,
