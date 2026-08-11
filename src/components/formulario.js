@@ -1,58 +1,42 @@
+import React from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 
-export const Formulario = ({ 
-  label,           
-  value,           
-  onChangeText,    
-  error,           
-  keyboardType = 'default', 
-  placeholder,     
-  maxLength        
-}) => {
+export function Formulario({
+  label,
+  value,
+  onChangeText,
+  error,
+  keyboardType = 'default',
+  placeholder = '',
+  maxLength,
+}) {
   return (
     <View style={styles.container}>
       <Text style={styles.label}>{label}</Text>
       <TextInput
-        style={[styles.input, error ? styles.inputError : null]}
+        style={[styles.input, error && styles.inputError]}
         value={value}
         onChangeText={onChangeText}
         keyboardType={keyboardType}
         placeholder={placeholder}
-        placeholderTextColor="#777"
+        placeholderTextColor="#999"
         maxLength={maxLength}
-        autoCapitalize="none" 
       />
-      {error ? <Text style={styles.errorText}>{error}</Text> : null}
+      {error ? <Text style={styles.error}>{error}</Text> : null}
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
-  container: {
-    marginBottom: 16,
-  },
-  label: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: '#6DB8FA',
-    marginBottom: 6,
-  },
+  container: { marginBottom: 12 },
+  label: { fontWeight: 'bold', marginBottom: 6, color: '#6DB8FA' },
   input: {
-    backgroundColor: '#d6b1e4',
-    borderWidth: 1,
-    borderColor: '#9d4dbb',
-    borderRadius: 8,
+    backgroundColor: 'rgba(255,255,255,0.08)',
     paddingHorizontal: 12,
     paddingVertical: 10,
-    fontSize: 16,
-    color: '#FFFFFF',
+    borderRadius: 8,
+    color: '#fff',
   },
-  inputError: {
-    borderColor: '#f3af19',
-  },
-  errorText: {
-    color: '#f3af19',
-    fontSize: 12,
-    marginTop: 4,
-  },
+  inputError: { borderColor: '#f3af19', borderWidth: 1 },
+  error: { color: '#f3af19', marginTop: 6, fontSize: 12 },
 });
